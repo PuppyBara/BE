@@ -1,6 +1,6 @@
 FROM openjdk:11
 
-WORKDIR /findog
+# WORKDIR /findog
 
 COPY test-0.0.1-SNAPSHOT.jar app.jar
 
