@@ -8,12 +8,12 @@ files:
 permissions:
   - object: /
     pattern: "**"
-    mode: '755'
+    mode: '777'
     owner: ubuntu
     group: ubuntu
 
 hooks:
   ApplicationStart:
     - location: deploy.sh
-      timeout: 60
+      timeout: 100
       runas: ubuntu
