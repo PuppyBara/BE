@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: findog
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://findog-mysql.cxgc0qkqmops.ap-northeast-2.rds.amazonaws.com:3306/findog?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: root1234
+  jpa:
+    hibernate:
+      ddl-auto: update
