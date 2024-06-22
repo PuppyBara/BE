@@ -1,5 +1,4 @@
 #blue
-version: '3'
 services:
   findog-api:
     build: .
