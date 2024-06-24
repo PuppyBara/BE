@@ -13,6 +13,7 @@
 # Ignore Gradle generated resource folders
 **/build/resources/
 
+.idea/
 
 ### Git ###
 # Created by git for backups. To disable backups in Git:
