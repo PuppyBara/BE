@@ -1,6 +1,19 @@
 # Created by https://www.toptal.com/developers/gitignore/api/java,intellij,git
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,intellij,git
 
+# Ignore Gradle build folder
+/build/
+
+# Ignore Gradle cache
+.gradle/
+
+# Ignore Gradle project-specific cache
+**/.gradle
+
+# Ignore Gradle generated resource folders
+**/build/resources/
+
+
 ### Git ###
 # Created by git for backups. To disable backups in Git:
 # $ git config --global mergetool.keepBackup false
