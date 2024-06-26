@@ -20,6 +20,8 @@ public abstract class Dog {
 
     protected String breed;
 
+    protected String color;
+
     @Enumerated(EnumType.STRING)
     protected Sex sex;
 

@@ -1,11 +1,10 @@
 package com.amatta.findog.service;
 
 import com.amatta.findog.domain.Member;
-import com.amatta.findog.dto.SignUpDto;
+import com.amatta.findog.dto.request.SignUpRequest;
 import com.amatta.findog.repository.MemberRepository;
 import com.amatta.findog.security.jwt.JwtToken;
 import com.amatta.findog.security.jwt.JwtTokenProvider;
-import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -14,15 +13,9 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -69,13 +62,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void signUp(SignUpDto signUpDto) {
-        if(memberRepository.existsById(signUpDto.getId())) {
+    public void signUp(SignUpRequest signUpRequest) {
+        if(memberRepository.existsById(signUpRequest.getId())) {
             throw new IllegalArgumentException("이미 가입된 아이디 입니다.");
         }
 
         //PW 암호화
-        String encodedPassword = passwordEncoder.encode(signUpDto.getPassword());
-        memberRepository.save(signUpDto.toEntity(encodedPassword));
+        String encodedPassword = passwordEncoder.encode(signUpRequest.getPassword());
+        memberRepository.save(signUpRequest.toEntity(encodedPassword));
     }
 }
