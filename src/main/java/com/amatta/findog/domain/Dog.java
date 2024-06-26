@@ -16,25 +16,25 @@ import java.time.LocalDateTime;
 public abstract class Dog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long dogId;
+    protected Long dogId;
 
-    private String breed;
+    protected String breed;
 
     @Enumerated(EnumType.STRING)
-    private Sex sex;
+    protected Sex sex;
 
-    private boolean isNeutering;
+    protected boolean isNeutering;
 
-    private String feature;
+    protected String feature;
 
-    private int age;
+    protected int age;
 
     @Embedded
-    private Address location;
+    protected Address location;
 
-    private LocalDateTime dateTime;
+    protected LocalDateTime dateTime;
 
-    private String image;
+    protected String image;
 
     protected Dog(){}
 

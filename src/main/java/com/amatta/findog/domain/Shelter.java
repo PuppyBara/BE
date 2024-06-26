@@ -22,10 +22,10 @@ public class Shelter extends MemberBaseEntity {
     protected Shelter(){}
 
     public static Shelter createShelter(String name, String id, String password,
-                                        Token token, Address address, String regestrationNumber,
+                                        Address address, String regestrationNumber,
                                         ShelterType shelterType, String tel){
         Shelter newShelter =  new Shelter();
-        newShelter.initializeMemberBaseEntity(name, id, password, token, address);
+        newShelter.initializeMemberBaseEntity(name, id, password, address);
         newShelter.regestrationNumber = regestrationNumber;
         newShelter.shelterType = shelterType;
         newShelter.tel = tel;

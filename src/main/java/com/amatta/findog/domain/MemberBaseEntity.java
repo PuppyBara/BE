@@ -1,5 +1,6 @@
 package com.amatta.findog.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
@@ -8,27 +9,34 @@ import lombok.ToString;
 @Getter @ToString
 @MappedSuperclass
 public abstract class MemberBaseEntity {
-    private String name;
+    @Column(nullable = false)
+    protected String name;
 
-    private String id;
+    @Column(updatable = false, unique = true, nullable = false)
+    protected String id;
 
-    private String password;
+    @Column(nullable = false)
+    protected String password;
 
     @Embedded
-    private Token token;
+    protected Token token;
 
     @Embedded
-    private Address address;
+    protected Address address;
 
     protected MemberBaseEntity(){};
 
+    public void changeRefreshToken(String refreshToken) {
+        if(token == null) token = new Token();
+        token.changeRefreshToken(refreshToken);
+    }
+
     // 초기화 메서드
     protected void initializeMemberBaseEntity(String name, String id, String password,
-                                              Token token, Address address) {
+                                              Address address) {
         this.name = name;
         this.id = id;
         this.password = password;
-        this.token = token;
         this.address = address;
     }
 

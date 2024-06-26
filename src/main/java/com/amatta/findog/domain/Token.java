@@ -12,7 +12,7 @@ public class Token {
 
     protected Token(){}
 
-    public static Token createToken(){
-        return new Token();
+    public void changeRefreshToken(String refreshToken){
+        this.refreshToken = refreshToken;
     }
 }
