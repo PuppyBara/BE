@@ -27,12 +27,12 @@ public class ShelterDog extends Dog {
 
     protected ShelterDog(){}
 
-    public static ShelterDog createShelterDog(String breed, Sex sex, boolean isNeutering,
+    public static ShelterDog createShelterDog(String breed, Sex sex, String color, boolean isNeutering,
                                               String feature, int age, Address location,
                                               String image, LocalDateTime dateTime, Shelter shelter,
                                               String noticeNo, LocalDateTime noticeSdt, LocalDateTime noticeEdt) {
         ShelterDog newShelterDog = new ShelterDog();
-        newShelterDog.initializeDog(breed, sex, isNeutering, feature, age, location, dateTime, image);
+        newShelterDog.initializeDog(color, breed, sex, isNeutering, feature, age, location, dateTime, image);
         newShelterDog.noticeNo = noticeNo;
         newShelterDog.noticeSdt = noticeSdt;
         newShelterDog.noticeEdt = noticeEdt;
