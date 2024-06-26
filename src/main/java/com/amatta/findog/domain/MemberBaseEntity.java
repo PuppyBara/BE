@@ -5,10 +5,15 @@ import jakarta.persistence.Embedded;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.ToString;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @Getter @ToString
 @MappedSuperclass
-public abstract class MemberBaseEntity {
+public abstract class MemberBaseEntity implements UserDetails {
     @Column(nullable = false)
     protected String name;
 
@@ -38,6 +43,37 @@ public abstract class MemberBaseEntity {
         this.id = id;
         this.password = password;
         this.address = address;
+    }
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @Override
+    public String getUsername() {
+        return id;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
 }

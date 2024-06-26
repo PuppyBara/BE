@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig{
+public class SecurityConfig  {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Bean
@@ -24,6 +24,7 @@ public class SecurityConfig{
         //BCrypt Encoder 사용 => DelegatingPasswordEncoder를통해 Spring security의 기본 권장 알고리즘 사용
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -36,9 +37,9 @@ public class SecurityConfig{
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                         // 해당 API대해서 모든 요청을 허가함
-                        .requestMatchers("/api/sign-in","/api/sign-up").permitAll()
+                        .requestMatchers("/api/member/sign-in","/api/member/sign-up","/api/shelter/sign-in","/api/shelter/sign-up").permitAll()
                         // USER권한이 있어야 요청할 수 있도록 제한함
-                        .requestMatchers("/test").hasRole("USER")
+//                        .requestMatchers("/test").hasRole("ROLE_MEMBER")
                         // 이밖의 모든 요청에 대해 인증을 필요로함
                         .anyRequest().authenticated())
                 // JWT 인증을 위해 직접 구현한 필터를 UsernamePasswordAuthenticationFilter 전에 실행
@@ -46,4 +47,5 @@ public class SecurityConfig{
                         UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+
 }

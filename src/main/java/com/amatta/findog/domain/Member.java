@@ -16,13 +16,13 @@ import java.util.List;
 @Builder
 @Table(name = "member")
 @EqualsAndHashCode(of = "memberId")
-public class Member extends MemberBaseEntity implements UserDetails {
+public class Member extends MemberBaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, unique = true, nullable = false)
     private Long memberId;
 
-    private String role = "user";
+    private String role = "MEMBER";
 
     public static Member createMember(String name, String id, String password,
                                       Address address){
@@ -32,34 +32,5 @@ public class Member extends MemberBaseEntity implements UserDetails {
     }
 
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
-    }
-
-    @Override
-    public String getUsername() {
-        return id;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 
 }

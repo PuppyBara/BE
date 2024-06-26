@@ -3,14 +3,17 @@ package com.amatta.findog.service;
 import com.amatta.findog.domain.Member;
 import com.amatta.findog.domain.MissingDog;
 import com.amatta.findog.domain.ProtectedDog;
+import com.amatta.findog.domain.Shelter;
 import com.amatta.findog.dto.request.MissingDogRequest;
 import com.amatta.findog.dto.response.MissingDogResponse;
 import com.amatta.findog.dto.response.MyMissingDogResponse;
 import com.amatta.findog.dto.response.MyProtectedDogResponse;
 import com.amatta.findog.repository.MemberRepository;
 import com.amatta.findog.repository.MissingDogRepository;
+import com.amatta.findog.repository.ShelterRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,12 +28,15 @@ public class MissingDogService {
     private final MissingDogRepository missingDogRepository;
     private final MemberRepository memberRepository;
 
-    private Member getMemberEntity(String id){
-        return memberRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    private Member getMemberEntity(UserDetails userDetail){
+        for(GrantedAuthority authority : userDetail.getAuthorities()) {
+            if(authority.getAuthority().equals("ROLE_SHELTER")) throw new RuntimeException("일반사용자만 사용할 수 있습니다.");
+        }
+        return memberRepository.findById(userDetail.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     public void createMissingDog(UserDetails userDetail, MissingDogRequest missingDog) {
-        MissingDog dog = missingDog.toEntity(getMemberEntity(userDetail.getUsername()));
+        MissingDog dog = missingDog.toEntity(getMemberEntity(userDetail));
         missingDogRepository.save(dog);
     }
 
@@ -41,8 +47,7 @@ public class MissingDogService {
 
     public MyMissingDogResponse getMyMissingDog(UserDetails userDetail) {
         //사용자가 보호소면 ShelterDogs를 봐야됨
-        Member member = getMemberEntity(userDetail.getUsername());
-
+        Member member = getMemberEntity(userDetail);
         List<MissingDog> list = missingDogRepository.findByMember(member);
         return MyMissingDogResponse.fromEntity(list);
     }

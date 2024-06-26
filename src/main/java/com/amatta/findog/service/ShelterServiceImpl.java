@@ -1,7 +1,8 @@
 package com.amatta.findog.service;
 
-import com.amatta.findog.domain.Member;
+import com.amatta.findog.domain.Shelter;
 import com.amatta.findog.dto.request.SignUpMemberRequest;
+import com.amatta.findog.dto.request.SignUpShelterRequest;
 import com.amatta.findog.repository.MemberRepository;
 import com.amatta.findog.repository.ShelterRepository;
 import com.amatta.findog.security.jwt.JwtToken;
@@ -22,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class MemberServiceImpl implements MemberService {
+public class ShelterServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final ShelterRepository shelterRepository;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
@@ -46,8 +47,8 @@ public class MemberServiceImpl implements MemberService {
             //인증정보 기반으로 JWT 토큰 생성
             JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
             //refresh 토큰 DB 및 쿠키에 저장
-            Member member = memberRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
-            member.changeRefreshToken(jwtToken.getRefreshToken());
+            Shelter shelter = shelterRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+            shelter.changeRefreshToken(jwtToken.getRefreshToken());
 
             Cookie refreshTokenCookie = new Cookie("refreshToken", jwtToken.getRefreshToken());
             refreshTokenCookie.setHttpOnly(true);
@@ -63,13 +64,14 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
-    public void signUp(SignUpMemberRequest signUpMemberRequest) {
-        if(memberRepository.existsById(signUpMemberRequest.getId()) || shelterRepository.existsById(signUpMemberRequest.getId())) {
+
+    public void signUp(SignUpShelterRequest signUpShelterRequest) {
+        if(memberRepository.existsById(signUpShelterRequest.getId()) || shelterRepository.existsById(signUpShelterRequest.getId())) {
             throw new IllegalArgumentException("이미 가입된 아이디 입니다.");
         }
 
         //PW 암호화
-        String encodedPassword = passwordEncoder.encode(signUpMemberRequest.getPassword());
-        memberRepository.save(signUpMemberRequest.toMemberEntity(encodedPassword));
+        String encodedPassword = passwordEncoder.encode(signUpShelterRequest.getPassword());
+        shelterRepository.save(signUpShelterRequest.toShelterEntity(encodedPassword));
     }
 }

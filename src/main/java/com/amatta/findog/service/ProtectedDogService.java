@@ -1,22 +1,21 @@
 package com.amatta.findog.service;
 
 import com.amatta.findog.domain.Member;
-import com.amatta.findog.domain.MissingDog;
 import com.amatta.findog.domain.ProtectedDog;
-import com.amatta.findog.dto.request.MissingDogRequest;
+import com.amatta.findog.domain.Shelter;
+import com.amatta.findog.domain.ShelterDog;
 import com.amatta.findog.dto.request.ProtectedDogRequest;
-import com.amatta.findog.dto.response.MissingDogResponse;
 import com.amatta.findog.dto.response.MyProtectedDogResponse;
 import com.amatta.findog.dto.response.ProtectedDogResponse;
-import com.amatta.findog.repository.MemberRepository;
-import com.amatta.findog.repository.MissingDogRepository;
-import com.amatta.findog.repository.ProtectedDogRepository;
+import com.amatta.findog.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -27,13 +26,24 @@ import java.util.List;
 public class ProtectedDogService {
     private final ProtectedDogRepository protectedDogRepository;
     private final MemberRepository memberRepository;
+    private final ShelterDogRepository shelterDogRepository;
+    private final ShelterRepository shelterRepository;
 
-    private Member getMemberEntity(String id){
-        return memberRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    private Member getMemberEntity(UserDetails userDetail){
+        for(GrantedAuthority authority : userDetail.getAuthorities()) {
+            if(authority.getAuthority().equals("ROLE_SHELTER")) throw new RuntimeException("일반사용자만 사용할 수 있습니다.");
+        }
+        return memberRepository.findById(userDetail.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
+    }
+    private Shelter getShelterEntity(UserDetails userDetail){
+        for(GrantedAuthority authority : userDetail.getAuthorities()) {
+            if(authority.getAuthority().equals("ROLE_MEMBER")) throw new RuntimeException("기업사용자만 사용할 수 있습니다.");
+        }
+        return shelterRepository.findById(userDetail.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     public void createProtectedDog(UserDetails userDetail, ProtectedDogRequest protectedDog) {
-        ProtectedDog dog = protectedDog.toEntity(getMemberEntity(userDetail.getUsername()));
+        ProtectedDog dog = protectedDog.toEntity(getMemberEntity(userDetail));
         protectedDogRepository.save(dog);
     }
 
@@ -43,7 +53,16 @@ public class ProtectedDogService {
     }
 
     public MyProtectedDogResponse getMyProtectedDog(UserDetails userDetail) {
-        List<ProtectedDog> list = protectedDogRepository.findByMember(getMemberEntity(userDetail.getUsername()));
-        return MyProtectedDogResponse.fromEntity(list);
+        for(GrantedAuthority authority : userDetail.getAuthorities()) {
+            if(authority.getAuthority().equals("ROLE_SHELTER")) {
+                List<ShelterDog> list = shelterDogRepository.findByShelter(getShelterEntity(userDetail));
+                return MyProtectedDogResponse.fromShelterDogEntity(list);
+            } else if(authority.getAuthority().equals("ROLE_MEMBER")){
+                List<ProtectedDog> list = protectedDogRepository.findByMember(getMemberEntity(userDetail));
+                return MyProtectedDogResponse.fromProtectedDogEntity(list);
+            }
+            break;
+        }
+        return null;
     }
 }
