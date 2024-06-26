@@ -3,6 +3,8 @@
 
 .idea
 
+*.class
+
 # Ignore Gradle build folder
 /build/
 
