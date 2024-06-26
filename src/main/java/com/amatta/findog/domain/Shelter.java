@@ -13,7 +13,7 @@ public class Shelter extends MemberBaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long shelterId;
 
-    private String regestrationNumber;
+    private String registrationNumber;
 
     private ShelterType shelterType;
 
@@ -22,11 +22,11 @@ public class Shelter extends MemberBaseEntity {
     protected Shelter(){}
 
     public static Shelter createShelter(String name, String id, String password,
-                                        Token token, Address address, String regestrationNumber,
+                                        Token token, Address address, String registrationNumber,
                                         ShelterType shelterType, String tel){
         Shelter newShelter =  new Shelter();
         newShelter.initializeMemberBaseEntity(name, id, password, token, address);
-        newShelter.regestrationNumber = regestrationNumber;
+        newShelter.registrationNumber = registrationNumber;
         newShelter.shelterType = shelterType;
         newShelter.tel = tel;
         return newShelter;
