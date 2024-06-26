@@ -31,4 +31,6 @@ public class ProtectedDog extends Dog {
         newProtectedDog.member = member;
         return newProtectedDog;
     }
+
+
 }

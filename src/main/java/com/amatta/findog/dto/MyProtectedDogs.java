@@ -9,7 +9,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class EtcInfo {
-    private String location;
+public class MyProtectedDogs {
+    private Long id;
+    private String image;
+    private String sex;
+    private String breed;
     private LocalDateTime dateTime;
+    private String location;
 }

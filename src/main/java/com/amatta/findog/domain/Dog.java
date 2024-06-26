@@ -65,4 +65,7 @@ public abstract class Dog {
         this.image = image;
     }
 
+    public String getFullAddress(){
+        return location.getAddress1()+", "+location.getAddress2();
+    }
 }
