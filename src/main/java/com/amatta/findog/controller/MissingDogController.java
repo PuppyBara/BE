@@ -39,7 +39,7 @@ public class MissingDogController {
     @GetMapping("/member/missing-dog/{dogId}")
     public ResponseEntity<MissingDogResponse> getMissingDog(@PathVariable Long dogId) {
         return new ResponseEntity<>(missingDogService.getMissingDog(dogId), HttpStatus.OK);
-    }
+    } 
 
     /** 나의 실종중인 강아지 조회
      * @author : 최서현
