@@ -1,11 +1,15 @@
 # Created by https://www.toptal.com/developers/gitignore/api/java,intellij,git
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,intellij,git
 
+.idea
+
+*.class
+
 # Ignore Gradle build folder
 /build/
 
 # Ignore Gradle cache
-.gradle/
+gradle/
 
 # Ignore Gradle project-specific cache
 **/.gradle

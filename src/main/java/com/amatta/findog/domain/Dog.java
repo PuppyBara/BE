@@ -16,33 +16,36 @@ import java.time.LocalDateTime;
 public abstract class Dog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long dogId;
+    protected Long dogId;
 
-    private String breed;
+    protected String breed;
+
+    protected String color;
 
     @Enumerated(EnumType.STRING)
-    private Sex sex;
+    protected Sex sex;
 
-    private boolean isNeutering;
+    protected boolean isNeutering;
 
-    private String feature;
+    protected String feature;
 
-    private int age;
+    protected int age;
 
     @Embedded
-    private Address location;
+    protected Address location;
 
-    private LocalDateTime dateTime;
+    protected LocalDateTime dateTime;
 
-    private String image;
+    protected String image;
 
     protected Dog(){}
 
     // 초기화 메서드
-    protected void initializeDog(String breed, Sex sex, boolean isNeutering, String feature,
+    protected void initializeDog(String color, String breed, Sex sex, boolean isNeutering, String feature,
                                  int age, Address location, LocalDateTime dateTime, String image) {
         this.breed = breed;
         this.sex = sex;
+        this.color = color;
         this.isNeutering = isNeutering;
         this.feature = feature;
         this.age = age;
@@ -50,5 +53,19 @@ public abstract class Dog {
         this.dateTime = dateTime;
         this.image = image;
     }
+    protected void initializeDog(String color, String breed, Sex sex, boolean isNeutering, String feature,
+                                 Address location, LocalDateTime dateTime, String image) {
+        this.breed = breed;
+        this.sex = sex;
+        this.color = color;
+        this.isNeutering = isNeutering;
+        this.feature = feature;
+        this.location = location;
+        this.dateTime = dateTime;
+        this.image = image;
+    }
 
+    public String getFullAddress(){
+        return location.getAddress1()+", "+location.getAddress2();
+    }
 }

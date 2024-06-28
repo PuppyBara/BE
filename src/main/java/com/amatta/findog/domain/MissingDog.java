@@ -26,9 +26,9 @@ public class MissingDog extends Dog {
     public static MissingDog createMissingDog(String breed, Sex sex, boolean isNeutering,
                                               String feature, int age, Address location,
                                               LocalDateTime dateTime, String image,
-                                              String name, Member member) {
+                                              String name, String color, Member member) {
         MissingDog newMissingDog = new MissingDog();
-        newMissingDog.initializeDog(breed, sex, isNeutering, feature, age, location, dateTime, image);
+        newMissingDog.initializeDog(color, breed, sex, isNeutering, feature, age, location, dateTime, image);
         newMissingDog.name = name;
         newMissingDog.member = member;
 

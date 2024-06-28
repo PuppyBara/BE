@@ -19,14 +19,22 @@ public class Shelter extends MemberBaseEntity {
 
     private String tel;
 
+    private String role = "SHELTER";
+
     protected Shelter(){}
 
-    public static Shelter createShelter(String name, String id, String password,
-                                        Token token, Address address, String registrationNumber,
-                                        ShelterType shelterType, String tel){
+
+    public static Shelter createShelter(String name, String id, String password){
+
+        //== API를 통해 name을 통해 데이터 가져와서 채워줘야함!
+        Address address = null;
+        String regestrationNumber = null;
+        ShelterType shelterType = null;
+        String tel = null;
+
         Shelter newShelter =  new Shelter();
-        newShelter.initializeMemberBaseEntity(name, id, password, token, address);
-        newShelter.registrationNumber = registrationNumber;
+        newShelter.initializeMemberBaseEntity(name, id, password, address);
+        //newShelter.registrationNumber = registrationNumber;
         newShelter.shelterType = shelterType;
         newShelter.tel = tel;
         return newShelter;

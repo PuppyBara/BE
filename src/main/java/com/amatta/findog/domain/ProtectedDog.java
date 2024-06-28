@@ -22,12 +22,15 @@ public class ProtectedDog extends Dog {
 
     protected ProtectedDog(){}
 
-    public static ProtectedDog createProtectedDog(String breed, Sex sex, boolean isNeutering,
-                                                  String feature, int age, Address location,
+    public static ProtectedDog createProtectedDog(String breed, Sex sex, String color, boolean isNeutering,
+                                                  String feature, Address location,
                                                   String image, LocalDateTime dateTime, Member member) {
         ProtectedDog newProtectedDog = new ProtectedDog();
-        newProtectedDog.initializeDog(breed, sex, isNeutering, feature, age, location, dateTime, image);
+        newProtectedDog.initializeDog(color, breed, sex, isNeutering, feature,
+                location, dateTime, image);
         newProtectedDog.member = member;
         return newProtectedDog;
     }
+
+
 }

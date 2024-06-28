@@ -1,23 +1,36 @@
 package com.amatta.findog.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Getter @ToString
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 @Table(name = "member")
+@EqualsAndHashCode(of = "memberId")
 public class Member extends MemberBaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(updatable = false, unique = true, nullable = false)
     private Long memberId;
 
-    protected Member(){}
+    private String role = "MEMBER";
 
     public static Member createMember(String name, String id, String password,
-                                      Token token, Address address){
+                                      Address address){
         Member newMember =  new Member();
-        newMember.initializeMemberBaseEntity(name, id, password, token, address);
+        newMember.initializeMemberBaseEntity(name, id, password, address);
         return newMember;
     }
+
+
+
 }
