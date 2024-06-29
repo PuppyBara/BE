@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface ShelterRepository extends JpaRepository<Shelter, Long> {
     Optional<Shelter> findById(String id);
     boolean existsById(String id);
+
+    Optional<Shelter> findByName(String shelterName);
 }
