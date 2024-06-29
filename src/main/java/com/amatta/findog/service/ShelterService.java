@@ -1,9 +1,9 @@
 package com.amatta.findog.service;
 
-import com.amatta.findog.domain.Member;
 import com.amatta.findog.domain.Shelter;
 import com.amatta.findog.domain.ShelterDog;
 import com.amatta.findog.dto.ShelterDogDto;
+import com.amatta.findog.dto.ShelterDto;
 import com.amatta.findog.repository.ShelterDogRepository;
 import com.amatta.findog.repository.ShelterRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +12,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,9 +20,9 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ShelterDogService {
+public class ShelterService {
 
-    private final AbandonedDogOpenAPIService abandonedDogOpenAPIService;
+    private final ShelterInfoOpenAPIService shelterInfoOpenAPIService;
     private final ShelterDogRepository shelterDogRepository;
     private final ShelterRepository shelterRepository;
 
@@ -31,14 +32,12 @@ public class ShelterDogService {
         }
         return shelterRepository.findById(userDetail.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
     }
-    public void reloadAbandonedDogApiData(LocalDateTime beginDate, LocalDateTime endDate) throws UnsupportedEncodingException, ParseException {
-        List<ShelterDogDto> shelterDogList = abandonedDogOpenAPIService.getShelterDogList(beginDate, endDate);
-        for(ShelterDogDto dto: shelterDogList) {
-            Optional<ShelterDog> shelterDog = shelterDogRepository.findByNoticeNo(dto.getNoticeNo());
-            if(shelterDog.isEmpty()) {
-                Optional<Shelter> shelter = shelterRepository.findByName(dto.getShelterName());
-                shelter.ifPresent(value -> shelterDogRepository.save(dto.toEntity(value)));
-            }
+
+    public void reloadShelterInfoApiData() throws UnsupportedEncodingException, ParseException {
+        List<ShelterDto> shelterDtos = shelterInfoOpenAPIService.getShelterList();
+        for(ShelterDto dto: shelterDtos) {
+            Optional<Shelter> shelter = shelterRepository.findByName(dto.getName());
+            if(shelter.isEmpty()) shelterRepository.save(dto.toEntity());
         }
     }
 }
