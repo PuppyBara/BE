@@ -1,11 +1,15 @@
 package com.amatta.findog.controller;
 
+import com.amatta.findog.dto.request.ShelterDogRequest;
+import com.amatta.findog.dto.response.ShelterDogResponse;
 import com.amatta.findog.service.ShelterDogService;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.parser.ParseException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
@@ -31,4 +35,24 @@ public class ShelterDogController {
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
+    /**
+     * 보호소 동물 등록
+     */
+    @PostMapping("/shelter-dog")
+    public ResponseEntity<Void> createShelterDog(@RequestBody ShelterDogRequest request,
+                                                   @AuthenticationPrincipal UserDetails userDetail) {
+        shelterDogService.createShelterDog(userDetail, request);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    /**
+     * 보호소 강아지 상세조회
+     */
+    @GetMapping("/shelter-dog/{dogId}")
+    public ResponseEntity<ShelterDogResponse> getShelterDog(@PathVariable Long dogId) {
+        ShelterDogResponse response = shelterDogService.getShelterDog(dogId);
+        return ResponseEntity.ok(response);
+    }
+
 }
