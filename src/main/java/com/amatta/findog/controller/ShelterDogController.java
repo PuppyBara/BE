@@ -1,6 +1,7 @@
 package com.amatta.findog.controller;
 
 import com.amatta.findog.dto.request.ShelterDogRequest;
+import com.amatta.findog.dto.response.MyShelterDogResponse;
 import com.amatta.findog.dto.response.ShelterDogResponse;
 import com.amatta.findog.service.ShelterDogService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ import java.time.LocalDate;
 
 
 @RestController
-@RequestMapping("/api/shelter")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class ShelterDogController {
 
@@ -26,7 +27,7 @@ public class ShelterDogController {
     /**
      *  유기동물 공공데이터 유기동물 공고 데이터 저장
      */
-    @GetMapping("/shelter-dog/reload")
+    @GetMapping("/shelter/shelter-dog/reload")
     public ResponseEntity<Void> reloadAbandonedDogApiData(
             @RequestParam("beginDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate beginDate,
             @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate)
@@ -39,7 +40,7 @@ public class ShelterDogController {
     /**
      * 보호소 동물 등록
      */
-    @PostMapping("/shelter-dog")
+    @PostMapping("/shelter/shelter-dog")
     public ResponseEntity<Void> createShelterDog(@RequestBody ShelterDogRequest request,
                                                    @AuthenticationPrincipal UserDetails userDetail) {
         shelterDogService.createShelterDog(userDetail, request);
@@ -49,9 +50,18 @@ public class ShelterDogController {
     /**
      * 보호소 강아지 상세조회
      */
-    @GetMapping("/shelter-dog/{dogId}")
+    @GetMapping("/shelter/shelter-dog/{dogId}")
     public ResponseEntity<ShelterDogResponse> getShelterDog(@PathVariable Long dogId) {
         ShelterDogResponse response = shelterDogService.getShelterDog(dogId);
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * 내 보호소 강아지 목록 조회
+     */
+    @GetMapping("/my/shelter-dog")
+    public ResponseEntity<MyShelterDogResponse> getMyShelterDog(@AuthenticationPrincipal UserDetails userDetail) {
+        MyShelterDogResponse response = shelterDogService.getMyShelterDog(userDetail);
         return ResponseEntity.ok(response);
     }
 

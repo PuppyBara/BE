@@ -5,6 +5,7 @@ import com.amatta.findog.domain.Shelter;
 import com.amatta.findog.domain.ShelterDog;
 import com.amatta.findog.dto.ShelterDogDto;
 import com.amatta.findog.dto.request.ShelterDogRequest;
+import com.amatta.findog.dto.response.MyShelterDogResponse;
 import com.amatta.findog.dto.response.ShelterDogResponse;
 import com.amatta.findog.repository.ShelterDogRepository;
 import com.amatta.findog.repository.ShelterRepository;
@@ -53,4 +54,10 @@ public class ShelterDogService {
                 .orElseThrow(() -> new RuntimeException("해당 보호소 강아지를 찾을 수 없습니다."));
         return ShelterDogResponse.fromEntity(shelterDog);
     }
+
+    public MyShelterDogResponse getMyShelterDog(UserDetails userDetail) {
+        List<ShelterDog> shelterDogs = shelterDogRepository.findByShelter(getShelterEntity(userDetail));
+        return MyShelterDogResponse.fromEntity(shelterDogs);
+    }
+
 }

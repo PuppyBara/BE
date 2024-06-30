@@ -37,7 +37,7 @@ public class SecurityConfig  {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                         // 해당 API대해서 모든 요청을 허가함
-                        .requestMatchers("/api/member/sign-in","/api/member/sign-up","/api/shelter/sign-in","/api/shelter/sign-up").permitAll()
+                        .requestMatchers("/api/member/sign-in","/api/member/sign-up","/api/shelter/sign-in","/api/shelter/sign-up", "/api/shelter/shelter-dog/reload", "/api/shelter/reload").permitAll()
                         // USER권한이 있어야 요청할 수 있도록 제한함
 //                        .requestMatchers("/test").hasRole("ROLE_MEMBER")
                         // 이밖의 모든 요청에 대해 인증을 필요로함
