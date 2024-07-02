@@ -39,9 +39,10 @@ public class ShelterDogDto {
     private String shelterName;
 
     public ShelterDog toEntity(Shelter shelter) {
+        Address address = Address.createAddress(location.split(" ")[0], location);
+
         return ShelterDog.createShelterDog(breed, sex, color, isNeutering, feature, age,
-                Address.createAddress(location, null),
-                image, dateTime, shelter, noticeNo, noticeSdt, noticeEdt);
+                address, image, dateTime, shelter, noticeNo, noticeSdt, noticeEdt);
     }
 
 }

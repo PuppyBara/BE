@@ -4,6 +4,8 @@ import com.amatta.findog.domain.Shelter;
 import com.amatta.findog.domain.ShelterDog;
 import com.amatta.findog.dto.ShelterDogDto;
 import com.amatta.findog.dto.ShelterDto;
+import com.amatta.findog.dto.response.SearchShelterDogResponse;
+import com.amatta.findog.dto.response.ShelterResponse;
 import com.amatta.findog.repository.ShelterDogRepository;
 import com.amatta.findog.repository.ShelterRepository;
 import lombok.RequiredArgsConstructor;
@@ -39,5 +41,22 @@ public class ShelterService {
             Optional<Shelter> shelter = shelterRepository.findByName(dto.getName());
             if(shelter.isEmpty()) shelterRepository.save(dto.toEntity());
         }
+    }
+
+    public ShelterResponse getShelterList() {
+        List<Shelter> 서울 = shelterRepository.findAllByAddressContainingKeywords("서울");
+        List<Shelter> 경기 = shelterRepository.findAllByAddressContainingKeywords("경기");
+        List<Shelter> 인천 = shelterRepository.findAllByAddressContainingKeywords("인천");
+        List<Shelter> 대전세종충청 = shelterRepository.findAllByAddressContainingKeywords("대전", "세종", "충청");
+        List<Shelter> 부산대구경상 = shelterRepository.findAllByAddressContainingKeywords("부산", "대구", "경상");
+        List<Shelter> 광주전라 = shelterRepository.findAllByAddressContainingKeywords("광주", "전라");
+        List<Shelter> 강원 = shelterRepository.findAllByAddressContainingKeywords("강원");
+        List<Shelter> 제주 = shelterRepository.findAllByAddressContainingKeywords("제주");
+        return ShelterResponse.fromEntity(서울, 경기, 인천, 대전세종충청, 부산대구경상, 광주전라, 강원, 제주);
+    }
+
+    public SearchShelterDogResponse getShelterDogList(List<Integer> searchIds) {
+        List<ShelterDog> shelterDogs = shelterDogRepository.findByShelterShelterIdIn(searchIds);
+        return SearchShelterDogResponse.fromEntity(shelterDogs);
     }
 }

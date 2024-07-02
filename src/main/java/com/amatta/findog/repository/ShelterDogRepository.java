@@ -14,4 +14,6 @@ public interface ShelterDogRepository extends JpaRepository<ShelterDog, Long> {
     List<ShelterDog> findByShelter(Shelter shelterEntity);
 
     Optional<ShelterDog> findByNoticeNo(String noticeNo);
+
+    List<ShelterDog> findByShelterShelterIdIn(List<Integer> ids);
 }
