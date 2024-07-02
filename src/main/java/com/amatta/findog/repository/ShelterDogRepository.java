@@ -1,10 +1,8 @@
 package com.amatta.findog.repository;
 
-import com.amatta.findog.domain.Member;
-import com.amatta.findog.domain.MissingDog;
-import com.amatta.findog.domain.Shelter;
-import com.amatta.findog.domain.ShelterDog;
+import com.amatta.findog.domain.*;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,4 +14,9 @@ public interface ShelterDogRepository extends JpaRepository<ShelterDog, Long> {
     Optional<ShelterDog> findByNoticeNo(String noticeNo);
 
     List<ShelterDog> findByShelterShelterIdIn(List<Integer> ids);
+
+    @Query("SELECT sd FROM ShelterDog sd JOIN Shelter s on sd.shelter.shelterId = s.shelterId " +
+                    "WHERE s.address.address2 LIKE concat('%',:address2, '%') " +
+                    "ORDER BY sd.noticeSdt DESC LIMIT 5")
+    List<ShelterDog> getTop5NearShelterDog(String address2);
 }

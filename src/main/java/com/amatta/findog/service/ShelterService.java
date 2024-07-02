@@ -1,5 +1,6 @@
 package com.amatta.findog.service;
 
+import com.amatta.findog.domain.Address;
 import com.amatta.findog.domain.Shelter;
 import com.amatta.findog.domain.ShelterDog;
 import com.amatta.findog.dto.ShelterDogDto;
@@ -57,6 +58,11 @@ public class ShelterService {
 
     public SearchShelterDogResponse getShelterDogList(List<Integer> searchIds) {
         List<ShelterDog> shelterDogs = shelterDogRepository.findByShelterShelterIdIn(searchIds);
+        return SearchShelterDogResponse.fromEntity(shelterDogs);
+    }
+
+    public SearchShelterDogResponse getNearShelterDogList(String location) {
+        List<ShelterDog> shelterDogs = shelterDogRepository.getTop5NearShelterDog(location);
         return SearchShelterDogResponse.fromEntity(shelterDogs);
     }
 }

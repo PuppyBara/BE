@@ -42,4 +42,10 @@ public class ShelterController {
         SearchShelterDogResponse response = shelterService.getShelterDogList(request.getSearchIds());
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/near")
+    public ResponseEntity<SearchShelterDogResponse> getNearShelterDogList(@RequestParam String location) {
+        SearchShelterDogResponse response = shelterService.getNearShelterDogList(location);
+        return ResponseEntity.ok(response);
+    }
 }
