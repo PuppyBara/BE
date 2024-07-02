@@ -44,6 +44,7 @@ public class AbandonedDogOpenAPIService {
 
     private void getPageResult(LocalDateTime beginDate, LocalDateTime endDate, int page) throws ParseException, UnsupportedEncodingException {
         String responseStr = response(beginDate, endDate, page);
+        if(responseStr.isEmpty() || responseStr.isBlank()) return;
         JSONParser parser = new JSONParser();
         Object object = parser.parse(responseStr);
         JSONObject jsonObject = (JSONObject) object;
