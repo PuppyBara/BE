@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.util.UUID;
+
 @Getter @ToString
 @Entity
 @Table(name = "shelter")
@@ -34,6 +36,17 @@ public class Shelter extends MemberBaseEntity {
 
         Shelter newShelter =  new Shelter();
         newShelter.initializeMemberBaseEntity(name, id, password, address);
+        //newShelter.registrationNumber = registrationNumber;
+        newShelter.shelterType = shelterType;
+        newShelter.tel = tel;
+        return newShelter;
+    }
+
+    public static Shelter createShelter(String name, ShelterType shelterType, String location, String tel){
+        Address address = Address.createAddress(location.split(" ")[0], location);
+
+        Shelter newShelter =  new Shelter();
+        newShelter.initializeMemberBaseEntity(name, UUID.randomUUID().toString(), UUID.randomUUID().toString(), address);
         //newShelter.registrationNumber = registrationNumber;
         newShelter.shelterType = shelterType;
         newShelter.tel = tel;
