@@ -4,6 +4,8 @@ import com.amatta.findog.enums.ShelterType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.ToString;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.UUID;
 
@@ -45,8 +47,11 @@ public class Shelter extends MemberBaseEntity {
     public static Shelter createShelter(String name, ShelterType shelterType, String location, String tel){
         Address address = Address.createAddress(location.split(" ")[0], location);
 
+        String id = UUID.randomUUID().toString();
+        String encodedPassword = PasswordEncoderFactories.createDelegatingPasswordEncoder().encode(UUID.randomUUID().toString());
+
         Shelter newShelter =  new Shelter();
-        newShelter.initializeMemberBaseEntity(name, UUID.randomUUID().toString(), UUID.randomUUID().toString(), address);
+        newShelter.initializeMemberBaseEntity(name, id, encodedPassword, address);
         //newShelter.registrationNumber = registrationNumber;
         newShelter.shelterType = shelterType;
         newShelter.tel = tel;
