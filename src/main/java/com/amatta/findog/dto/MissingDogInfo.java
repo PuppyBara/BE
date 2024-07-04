@@ -30,7 +30,6 @@ public class MissingDogInfo {
     @Size(max = 255, message = "색깔은 255자 이하로 작성 가능합니다.")
     private String color;
 
-    @NotBlank(message = "중성화여부는 비워둘 수 없습니다.")
     private boolean isNeutering;
 
     @Size(max = 255, message = "특징은 255자 이하로 작성 가능합니다.")

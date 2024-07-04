@@ -5,6 +5,7 @@ import com.amatta.findog.domain.MissingDog;
 import com.amatta.findog.dto.EtcInfo;
 import com.amatta.findog.dto.MissingDogInfo;
 import com.amatta.findog.dto.request.MissingDogRequest;
+import com.amatta.findog.dto.response.AllMissingDogResponse;
 import com.amatta.findog.dto.response.MissingDogResponse;
 import com.amatta.findog.dto.response.MyMissingDogResponse;
 import com.amatta.findog.dto.response.MyProtectedDogResponse;
@@ -45,7 +46,7 @@ public class MissingDogController {
      * @author : 최서현
      */
     @GetMapping("/member/missing-dog/{dogId}")
-    public ResponseEntity<MissingDogResponse> getMissingDog(@PathVariable Long dogId) {
+    public ResponseEntity<MissingDogResponse> getMissingDog(@PathVariable("dogId") Long dogId) {
         return new ResponseEntity<>(missingDogService.getMissingDog(dogId), HttpStatus.OK);
     } 
 
@@ -55,6 +56,15 @@ public class MissingDogController {
     @GetMapping("/my/missing-dog")
     public ResponseEntity<MyMissingDogResponse> getMyMissingDog(@AuthenticationPrincipal UserDetails userDetail) {
         return new ResponseEntity<>(missingDogService.getMyMissingDog(userDetail), HttpStatus.OK);
+    }
+
+
+    /** 실종강아지 목록 조회
+     * @author : 최서현
+     */
+    @GetMapping("/missing-dog/{pageNo}")
+    public ResponseEntity<AllMissingDogResponse> getAllMissingDog(@PathVariable("pageNo") int pageNo) {
+        return new ResponseEntity<>(missingDogService.getAllMissingDog(pageNo), HttpStatus.OK);
     }
 
 }

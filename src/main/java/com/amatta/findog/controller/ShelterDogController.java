@@ -51,7 +51,7 @@ public class ShelterDogController {
      * 보호소 강아지 상세조회
      */
     @GetMapping("/shelter/shelter-dog/{dogId}")
-    public ResponseEntity<ShelterDogResponse> getShelterDog(@PathVariable Long dogId) {
+    public ResponseEntity<ShelterDogResponse> getShelterDog(@PathVariable("dogId") Long dogId) {
         ShelterDogResponse response = shelterDogService.getShelterDog(dogId);
         return ResponseEntity.ok(response);
     }

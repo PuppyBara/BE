@@ -1,22 +1,26 @@
 package com.amatta.findog.service;
 
-import com.amatta.findog.domain.Member;
-import com.amatta.findog.domain.ProtectedDog;
-import com.amatta.findog.domain.Shelter;
-import com.amatta.findog.domain.ShelterDog;
+import com.amatta.findog.domain.*;
 import com.amatta.findog.dto.request.ProtectedDogRequest;
+import com.amatta.findog.dto.response.AllMissingDogResponse;
+import com.amatta.findog.dto.response.AllProtectedDogResponse;
 import com.amatta.findog.dto.response.MyProtectedDogResponse;
 import com.amatta.findog.dto.response.ProtectedDogResponse;
 import com.amatta.findog.repository.*;
 import com.amatta.findog.util.S3Util;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.print.Pageable;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -29,6 +33,7 @@ public class ProtectedDogService {
     private final MemberRepository memberRepository;
     private final ShelterDogRepository shelterDogRepository;
     private final ShelterRepository shelterRepository;
+    private final DogRepository dogRepository;
     private final S3Util s3Util;
 
     private Member getMemberEntity(UserDetails userDetail){
@@ -68,5 +73,12 @@ public class ProtectedDogService {
             break;
         }
         return null;
+    }
+
+    public AllProtectedDogResponse getAllProtectedDog(int pageNo) {
+        List<String> allowedDtypes = Arrays.asList("SHELTER", "PROTECTED");
+        PageRequest pageable = PageRequest.of(pageNo - 1, 10);
+        List<Dog> dogs = dogRepository.findNonMissingDogs(pageable).getContent();
+        return AllProtectedDogResponse.fromEntity(dogs);
     }
 }

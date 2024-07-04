@@ -5,9 +5,7 @@ import com.amatta.findog.dto.MissingDogInfo;
 import com.amatta.findog.dto.ProtectedDogInfo;
 import com.amatta.findog.dto.request.MissingDogRequest;
 import com.amatta.findog.dto.request.ProtectedDogRequest;
-import com.amatta.findog.dto.response.MissingDogResponse;
-import com.amatta.findog.dto.response.MyProtectedDogResponse;
-import com.amatta.findog.dto.response.ProtectedDogResponse;
+import com.amatta.findog.dto.response.*;
 import com.amatta.findog.service.MissingDogService;
 import com.amatta.findog.service.ProtectedDogService;
 import jakarta.validation.Valid;
@@ -45,7 +43,7 @@ public class ProtectedDogController {
      * @author : 최서현
      */
     @GetMapping("/member/protected-dog/{dogId}")
-    public ResponseEntity<ProtectedDogResponse> getProtectedDog(@PathVariable Long dogId) {
+    public ResponseEntity<ProtectedDogResponse> getProtectedDog(@PathVariable("dogId") Long dogId) {
         return new ResponseEntity<>(protectedDogService.getProtectedDog(dogId), HttpStatus.OK);
     }
 
@@ -55,5 +53,13 @@ public class ProtectedDogController {
     @GetMapping("/my/protected-dog")
     public ResponseEntity<MyProtectedDogResponse> getMyProtectedDog(@AuthenticationPrincipal UserDetails userDetail) {
         return new ResponseEntity<>(protectedDogService.getMyProtectedDog(userDetail), HttpStatus.OK);
+    }
+
+    /** 보호강아지 목록 조회
+     * @author : 최서현
+     */
+    @GetMapping("/protected-dog/{pageNo}")
+    public ResponseEntity<AllProtectedDogResponse> getAllMissingDog(@PathVariable("pageNo") int pageNo) {
+        return new ResponseEntity<>(protectedDogService.getAllProtectedDog(pageNo), HttpStatus.OK);
     }
 }

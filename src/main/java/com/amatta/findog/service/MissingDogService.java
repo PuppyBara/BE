@@ -3,6 +3,7 @@ package com.amatta.findog.service;
 import com.amatta.findog.domain.Member;
 import com.amatta.findog.domain.MissingDog;
 import com.amatta.findog.dto.request.MissingDogRequest;
+import com.amatta.findog.dto.response.AllMissingDogResponse;
 import com.amatta.findog.dto.response.MissingDogResponse;
 import com.amatta.findog.dto.response.MyMissingDogResponse;
 import com.amatta.findog.repository.MemberRepository;
@@ -10,12 +11,15 @@ import com.amatta.findog.repository.MissingDogRepository;
 import com.amatta.findog.util.S3Util;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 @Service
@@ -53,4 +57,9 @@ public class MissingDogService {
         return MyMissingDogResponse.fromEntity(list);
     }
 
+    public AllMissingDogResponse getAllMissingDog(int pageNo) {
+        PageRequest pageable = PageRequest.of(pageNo-1, 10, Sort.by(Sort.Order.desc("crudDate.createAt"), Sort.Order.asc("dogId")));
+        List<MissingDog> missingDogs = missingDogRepository.findAll(pageable).getContent();
+        return AllMissingDogResponse.fromEntity(missingDogs);
+    }
 }
