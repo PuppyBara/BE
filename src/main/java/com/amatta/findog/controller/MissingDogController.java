@@ -1,6 +1,9 @@
 package com.amatta.findog.controller;
 
 import com.amatta.findog.domain.Member;
+import com.amatta.findog.domain.MissingDog;
+import com.amatta.findog.dto.EtcInfo;
+import com.amatta.findog.dto.MissingDogInfo;
 import com.amatta.findog.dto.request.MissingDogRequest;
 import com.amatta.findog.dto.response.MissingDogResponse;
 import com.amatta.findog.dto.response.MyMissingDogResponse;
@@ -14,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -27,9 +31,13 @@ public class MissingDogController {
      * @author : 최서현
      */
     @PostMapping("/member/missing-dog")
-    public ResponseEntity<HttpStatus> createMissingDog(@Valid @RequestBody MissingDogRequest missingDog,
+    public ResponseEntity<HttpStatus> createMissingDog(
+                                            @RequestPart("missingDogInfo.image") MultipartFile image,
+                                             @Valid @RequestPart("missingDogInfo") MissingDogInfo missingDogInfo,
+                                             @Valid @RequestPart("etcInfo") EtcInfo etcInfo,
                                              @AuthenticationPrincipal UserDetails userDetail) {
-        missingDogService.createMissingDog(userDetail, missingDog);
+        MissingDogRequest missingDog = new MissingDogRequest(missingDogInfo, etcInfo);
+        missingDogService.createMissingDog(userDetail, image, missingDog);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

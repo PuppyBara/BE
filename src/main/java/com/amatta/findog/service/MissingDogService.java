@@ -2,21 +2,19 @@ package com.amatta.findog.service;
 
 import com.amatta.findog.domain.Member;
 import com.amatta.findog.domain.MissingDog;
-import com.amatta.findog.domain.ProtectedDog;
-import com.amatta.findog.domain.Shelter;
 import com.amatta.findog.dto.request.MissingDogRequest;
 import com.amatta.findog.dto.response.MissingDogResponse;
 import com.amatta.findog.dto.response.MyMissingDogResponse;
-import com.amatta.findog.dto.response.MyProtectedDogResponse;
 import com.amatta.findog.repository.MemberRepository;
 import com.amatta.findog.repository.MissingDogRepository;
-import com.amatta.findog.repository.ShelterRepository;
+import com.amatta.findog.util.S3Util;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -27,6 +25,7 @@ import java.util.List;
 public class MissingDogService {
     private final MissingDogRepository missingDogRepository;
     private final MemberRepository memberRepository;
+    private final S3Util s3Util;
 
     private Member getMemberEntity(UserDetails userDetail){
         for(GrantedAuthority authority : userDetail.getAuthorities()) {
@@ -35,8 +34,10 @@ public class MissingDogService {
         return memberRepository.findById(userDetail.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    public void createMissingDog(UserDetails userDetail, MissingDogRequest missingDog) {
-        MissingDog dog = missingDog.toEntity(getMemberEntity(userDetail));
+    public void createMissingDog(UserDetails userDetail, MultipartFile image, MissingDogRequest missingDog) {
+        //== 이미지를 S3에 업로드
+        String imagePath = s3Util.saveFile(image);
+        MissingDog dog = missingDog.toEntity(getMemberEntity(userDetail),imagePath);
         missingDogRepository.save(dog);
     }
 

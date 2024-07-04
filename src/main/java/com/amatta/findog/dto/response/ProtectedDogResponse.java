@@ -19,7 +19,7 @@ public class ProtectedDogResponse {
     public static ProtectedDogResponse fromEntity(ProtectedDog protectedDog) {
         return ProtectedDogResponse.builder()
                 .protectedDogInfo(ProtectedDogInfo.builder()
-                                .image(protectedDog.getImage())
+                                .imagePath(protectedDog.getImage())
                                 .breed(protectedDog.getBreed())
                                 .sex(String.valueOf(protectedDog.getSex()))
                                 .color(protectedDog.getColor())

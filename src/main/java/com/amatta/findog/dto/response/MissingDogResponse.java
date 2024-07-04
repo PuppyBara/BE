@@ -20,7 +20,7 @@ public class MissingDogResponse {
     public static MissingDogResponse fromEntity(MissingDog missingDog) {
         return MissingDogResponse.builder()
                 .missingDogInfo(MissingDogInfo.builder()
-                                .image(missingDog.getImage())
+                                .imagePath(missingDog.getImage())
                                 .name(missingDog.getName())
                                 .age(missingDog.getAge())
                                 .breed(missingDog.getBreed())

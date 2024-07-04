@@ -6,24 +6,23 @@ import com.amatta.findog.domain.ProtectedDog;
 import com.amatta.findog.dto.EtcInfo;
 import com.amatta.findog.dto.ProtectedDogInfo;
 import com.amatta.findog.enums.Sex;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
 public class ProtectedDogRequest {
     private ProtectedDogInfo protectedDogInfo;
     private EtcInfo etcInfo;
 
-    public ProtectedDog toEntity(Member memberEntity) {
+    public ProtectedDog toEntity(Member memberEntity, String imagePath) {
         return ProtectedDog.createProtectedDog(protectedDogInfo.getBreed(),
                 Sex.valueOf(protectedDogInfo.getSex()), protectedDogInfo.getColor(),
                 protectedDogInfo.isNeutering(), protectedDogInfo.getFeature(),
                 Address.createAddress(etcInfo.getLocation(), null),
-                protectedDogInfo.getImage(), etcInfo.getDateTime(), memberEntity);
+                imagePath, etcInfo.getDateTime(), memberEntity);
     }
 }

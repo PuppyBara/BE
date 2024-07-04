@@ -12,8 +12,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class MissingDogInfo {
-    @NotBlank(message = "사진은 필수항목 입니다.")
-    private String image;
+    private String imagePath;
 
     @NotBlank(message = "이름은 비워둘 수 없습니다.")
     @Size(max = 255, message = "이름은 255자 이하로 작성 가능합니다.")

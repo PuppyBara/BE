@@ -12,8 +12,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class ProtectedDogInfo {
-    @NotBlank(message = "사진은 필수항목 입니다.")
-    private String image;
+    private String imagePath;
 
     @NotBlank(message = "품종은 비워둘 수 없습니다.")
     private String breed;

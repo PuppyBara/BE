@@ -1,5 +1,8 @@
 package com.amatta.findog.controller;
 
+import com.amatta.findog.dto.EtcInfo;
+import com.amatta.findog.dto.MissingDogInfo;
+import com.amatta.findog.dto.ProtectedDogInfo;
 import com.amatta.findog.dto.request.MissingDogRequest;
 import com.amatta.findog.dto.request.ProtectedDogRequest;
 import com.amatta.findog.dto.response.MissingDogResponse;
@@ -15,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -27,9 +31,13 @@ public class ProtectedDogController {
      * @author : 최서현
      */
     @PostMapping("/member/protected-dog")
-    public ResponseEntity<HttpStatus> createProtectedDog(@Valid @RequestBody ProtectedDogRequest protectedDog,
+    public ResponseEntity<HttpStatus> createProtectedDog(
+                                                        @RequestPart("protectedDogInfo.image") MultipartFile image,
+                                                        @RequestPart("protectedDogInfo") ProtectedDogInfo protectedDogInfo,
+                                                        @RequestPart("etcInfo") EtcInfo etcInfo,
                                                        @AuthenticationPrincipal UserDetails userDetail) {
-        protectedDogService.createProtectedDog(userDetail, protectedDog);
+        ProtectedDogRequest protectedDog = new ProtectedDogRequest(protectedDogInfo, etcInfo);
+        protectedDogService.createProtectedDog(userDetail, protectedDog, image);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
