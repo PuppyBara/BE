@@ -66,6 +66,8 @@ public abstract class Dog {
     }
 
     public String getFullAddress(){
-        return location.getAddress1()+", "+location.getAddress2();
+        String str1 = location.getAddress1() == null? "" : location.getAddress1();
+        String str2 = location.getAddress2() == null? "" : location.getAddress2();
+        return str1+" "+ str2;
     }
 }
