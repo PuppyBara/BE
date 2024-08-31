@@ -46,7 +46,7 @@ public class SecurityConfig  {
                                 "/api/shelter/reload"
                         ).permitAll()
                         // USER권한이 있어야 요청할 수 있도록 제한함
-//                        .requestMatchers("/test").hasRole("ROLE_MEMBER")
+                        .requestMatchers("/test").hasRole("ROLE_MEMBER")
                         // 이밖의 모든 요청에 대해 인증을 필요로함
                         .anyRequest().authenticated())
                 // JWT 인증을 위해 직접 구현한 필터를 UsernamePasswordAuthenticationFilter 전에 실행
